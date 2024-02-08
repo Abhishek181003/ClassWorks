@@ -1,4 +1,12 @@
 #include <stdio.h>
+void traversing(char *data , int *link , int start){
+    int ptr = start;
+    while (ptr!=-1){
+        printf("%c ",data[ptr]);
+        ptr=link[ptr];
+    }
+    printf("\n");
+}
 
 int main() {
     int start=0; // head of data
@@ -17,16 +25,9 @@ int main() {
     link[7]=8;
     link[8]=9;
     link[9]=-1;
-    int ptr = start;
-    while (ptr!=-1){
-        printf("%c ",data[ptr]);
-        ptr=link[ptr];
-    }
-    int ptr2 = avail;
-    while (ptr2!=-1){
-        printf("%c ",data[ptr2]);
-        ptr2=link[ptr2];
-    }
+    
+    traversing(data,link,start);
+    
     printf("Program end here");
 
     return 0;
