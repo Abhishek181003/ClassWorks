@@ -2,9 +2,19 @@
 void traversing(char *data , int *link , int start){
     int ptr = start;
     while (ptr!=-1){
-        printf("%c ",data[ptr]);
+        printf("%c -> ",data[ptr]);
         ptr=link[ptr];
     }
+    printf("null");
+    printf("\n");
+}
+void insertAt(char *data , int *link ,int start ,int avail, char value){
+    int ptr = start;
+    while (data[ptr] < value){
+        printf("%c",data[link[ptr]]);
+        ptr=link[ptr];
+    }
+    // printf("%c",data[ptr]);
     printf("\n");
 }
 
@@ -27,6 +37,8 @@ int main() {
     link[9]=-1;
     
     traversing(data,link,start);
+    // traversing(data,link,avail);
+    insertAt(data, link ,start,avail,'J');
     
     printf("Program end here");
 
