@@ -17,6 +17,25 @@ void insertAt(char *data , int *link ,int start ,int avail, char value){
     // printf("%c",data[ptr]);
     printf("\n");
 }
+void size(int start , char *data , int *link){
+    int count = 0;
+    int ptr=start;
+    while(ptr != -1){
+        count++;
+        ptr=link[ptr];
+    }
+    printf("%d\n",count);
+    
+}
+int search(int start ,char target, char *data , int *link){
+    int ptr=start;
+    while(ptr != -1){
+        if(data[ptr]==target) return ptr;
+        ptr=link[ptr];
+    }
+    return -1;
+    
+}
 
 int main() {
     int start=0; // head of data
@@ -39,7 +58,11 @@ int main() {
     traversing(data,link,start);
     // traversing(data,link,avail);
     insertAt(data, link ,start,avail,'J');
-    
+    size(start , data ,link);
+    printf("Enter the character which you want to search : ");
+    char target ;
+    scanf("%c",&target);
+    printf("Is present at %d ",search(start,target , data ,link));
     printf("Program end here");
 
     return 0;
