@@ -1,4 +1,3 @@
-// Under working
 #include <stdio.h>
 void display(char *data , int *link , int start){
     int ptr = start;
@@ -15,21 +14,31 @@ void insert(char *data , int *link ,int *start ,int *avail, char value){
         return;
     }
     int ptr = *start;
-    while(link[ptr]==-1 || data[link[ptr]]<value){
-        ptr=link[ptr];
-        printf("%d",link[ptr]);
-    }
-    
-    int temp=*avail;
-    *avail=link[*avail];
-    data[temp]=value;
-    if(ptr==*start){
+    if(data[ptr]>value){  // This will check the value is less than first element
+        int temp=*avail;
+        *avail=link[*avail];
+        data[temp]=value;
         link[temp]=*start;
-        *start=temp;
+        *start=temp; // update the start
+        return;
+    }
+    while(link[ptr]!=-1){ 
+        if(data[link[ptr]]>value){ // Reach to the correct position
+            break;
+        }
+        ptr=link[ptr];
     }
     
-    else{
-        link[temp]=link[ptr];
+    int temp=*avail;  // update the avail 
+    *avail=link[*avail];
+    data[temp]=value; // filling the value
+    
+    if(link[ptr]==-1){  // correcting the node when ptr is at end
+        link[temp]=-1;
+        link[ptr]=temp;
+    }
+    else{ // correcting node when ptr is between start and end
+        link[temp]=link[ptr]; 
         link[ptr]=temp;
     }
 }
