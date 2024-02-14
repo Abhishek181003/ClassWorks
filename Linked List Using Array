@@ -1,6 +1,6 @@
 #include <stdio.h>
-void traversing(char *data , int *link , int start){
-    int ptr = start;
+void traversing(char *data , int *link , int *start){
+    int ptr = *start;
     while (ptr!=-1){
         printf("%c -> ",data[ptr]);
         ptr=link[ptr];
@@ -8,37 +8,61 @@ void traversing(char *data , int *link , int start){
     printf("null");
     printf("\n");
 }
-void insertAt(char *data , int *link ,int start ,int avail, char value , int idx){
-    int ptr = start;
+void traversing2(char *data , int *link , int *start){
+    int ptr = *start;
     while (ptr!=-1){
-        if(data[ptr]>value) break;
+        printf("%d -> ",ptr);
         ptr=link[ptr];
     }
-    avail=link[avail];
-    // printf(" %d %c %d",ptr,data[ptr],link[ptr]);
-    int temp=avail;
-    link[avail]=link[ptr];
-    link[ptr]=temp;
-    data[avail]=value;
+    printf("null");
+    printf("\n");
 }
-void size(int start , char *data , int *link){
+void insertAt(char *data , int *link ,int *start ,int *avail, char value , int idx){
+    int flag=0;
+    if(*avail==-1){
+        printf("OverFlow");
+        return;
+    }
+    int ptr = *start;
+    while(ptr!=-1){
+        if(ptr==idx){ 
+            flag=1;
+            break;
+        }
+        ptr=link[ptr];
+    }
+    if (flag==0){
+        printf("Given index is not found in the list\n");
+        return;
+    }
+    int temp=*avail;
+    *avail=link[*avail];
+    data[temp]=value;
+    link[temp]=link[ptr];
+    link[ptr]=temp;
+}
+void size(int *start , char *data , int *link){
     int count = 0;
-    int ptr=start;
+    int ptr=*start;
     while(ptr != -1){
         count++;
         ptr=link[ptr];
     }
-    printf("%d\n",count);
+    printf("The length of the list is : %d\n",count);
     
 }
-int search(int start ,char target, char *data , int *link){
-    int ptr=start;
+int search(int *start ,char target, char *data , int *link){
+    int ptr=*start;
+    int idx = 0;
     while(ptr != -1){
-        if(data[ptr]==target) return ptr;
+        if(data[ptr]==target){
+        printf("It's present at position %d and",idx);
+        return ptr;
+        }
+        idx++;
         ptr=link[ptr];
     }
     return -1;
-    
 }
 
 int main() {
@@ -59,18 +83,21 @@ int main() {
     link[8]=9;
     link[9]=-1;
     
-    traversing(data,link,start);
-    // printf("%d",avail);
-    // traversing(data,link,avail);
-    // insertAt(data, link ,start,avail,'J',3);
-    traversing(data,link,start);
-    // printf("%d",avail);
-    // traversing(data,link,avail);
-    // size(start , data ,link);
-    printf("Enter the character which you want to search : ");
-    char target ;
-    scanf("%c",&target);
-    printf("It's present at index %d \n",search(start,target , data ,link));
+    traversing(data,link,&start); // A -> D -> G -> X -> null
+    size(&start , data ,link); // size is  4
+    insertAt(data, link ,&start,&avail,'J',4);
+    traversing(data,link,&start); // A -> D -> J -> G -> X -> null
+    size(&start , data ,link); // size is 5
+    insertAt(data, link ,&start,&avail,'L',6);
+    traversing(data,link,&start); // A -> D -> J -> G -> L -> X -> null
+    size(&start , data ,link); // size is 6
+    
+    // printf("Enter the character which you want to search : ");
+    // char target;
+    // scanf("%c",&target);
+    // if(search(*start,target , data ,link) !=-1)
+    // printf(" at index %d \n",search(&start,target , data ,link));
+    // else printf("Character is not present in the list \n");
     printf("Program end here");
 
     return 0;
