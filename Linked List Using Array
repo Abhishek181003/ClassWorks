@@ -8,14 +8,18 @@ void traversing(char *data , int *link , int start){
     printf("null");
     printf("\n");
 }
-void insertAt(char *data , int *link ,int start ,int avail, char value){
+void insertAt(char *data , int *link ,int start ,int avail, char value , int idx){
     int ptr = start;
-    while (data[ptr] < value){
-        printf("%c",data[link[ptr]]);
+    while (ptr!=-1){
+        if(data[ptr]>value) break;
         ptr=link[ptr];
     }
-    // printf("%c",data[ptr]);
-    printf("\n");
+    avail=link[avail];
+    // printf(" %d %c %d",ptr,data[ptr],link[ptr]);
+    int temp=avail;
+    link[avail]=link[ptr];
+    link[ptr]=temp;
+    data[avail]=value;
 }
 void size(int start , char *data , int *link){
     int count = 0;
@@ -56,13 +60,17 @@ int main() {
     link[9]=-1;
     
     traversing(data,link,start);
+    // printf("%d",avail);
     // traversing(data,link,avail);
-    insertAt(data, link ,start,avail,'J');
-    size(start , data ,link);
+    // insertAt(data, link ,start,avail,'J',3);
+    traversing(data,link,start);
+    // printf("%d",avail);
+    // traversing(data,link,avail);
+    // size(start , data ,link);
     printf("Enter the character which you want to search : ");
     char target ;
     scanf("%c",&target);
-    printf("Is present at %d ",search(start,target , data ,link));
+    printf("It's present at index %d \n",search(start,target , data ,link));
     printf("Program end here");
 
     return 0;
