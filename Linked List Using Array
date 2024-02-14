@@ -8,15 +8,6 @@ void traversing(char *data , int *link , int *start){
     printf("null");
     printf("\n");
 }
-void traversing2(char *data , int *link , int *start){
-    int ptr = *start;
-    while (ptr!=-1){
-        printf("%d -> ",ptr);
-        ptr=link[ptr];
-    }
-    printf("null");
-    printf("\n");
-}
 void insertAt(char *data , int *link ,int *start ,int *avail, char value , int idx){
     int flag=0;
     if(*avail==-1){
@@ -39,6 +30,33 @@ void insertAt(char *data , int *link ,int *start ,int *avail, char value , int i
     *avail=link[*avail];
     data[temp]=value;
     link[temp]=link[ptr];
+    link[ptr]=temp;
+}
+void insertAtHead(char *data , int *link ,int *start ,int *avail, char value ){
+    if(*avail==-1){
+        printf("OverFlow");
+        return;
+    }
+    
+    int temp=*avail;
+    *avail=link[*avail];
+    data[temp]=value;
+    link[temp]=*start;
+    *start=temp;
+}
+void insertAtTail(char *data , int *link ,int *start ,int *avail, char value ){
+    if(*avail==-1){
+        printf("OverFlow");
+        return;
+    }
+    int ptr=*start;
+    while (link[ptr]!=-1){
+        ptr=link[ptr];
+    }
+    int temp=*avail;
+    *avail=link[*avail];
+    data[temp]=value;
+    link[temp]=-1;
     link[ptr]=temp;
 }
 void size(int *start , char *data , int *link){
@@ -89,8 +107,20 @@ int main() {
     traversing(data,link,&start); // A -> D -> J -> G -> X -> null
     size(&start , data ,link); // size is 5
     insertAt(data, link ,&start,&avail,'L',6);
-    traversing(data,link,&start); // A -> D -> J -> G -> L -> X -> null
-    size(&start , data ,link); // size is 6
+    traversing(data,link,&start); 
+    size(&start , data ,link); 
+    insertAtHead(data, link ,&start,&avail,'Z');
+    traversing(data,link,&start); 
+    size(&start , data ,link); 
+    insertAtHead(data, link ,&start,&avail,'P');
+    traversing(data,link,&start); 
+    size(&start , data ,link); 
+    insertAtTail(data, link ,&start,&avail,'Q');
+    traversing(data,link,&start); 
+    size(&start , data ,link); 
+    insertAtTail(data, link ,&start,&avail,'H');
+    traversing(data,link,&start); 
+    size(&start , data ,link); 
     
     // printf("Enter the character which you want to search : ");
     // char target;
