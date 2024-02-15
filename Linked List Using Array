@@ -59,6 +59,38 @@ void insertAtTail(char *data , int *link ,int *start ,int *avail, char value ){
     link[temp]=-1;
     link[ptr]=temp;
 }
+void deleteSpecific(char *data , int *link ,int *start ,int *avail, int ploc ,int loc){
+   
+    if (ploc==-1){
+        *start=link[*start];
+    }
+    else{
+        link[ploc]=link[loc];
+    }
+    link[loc]=*avail;
+    *avail=loc;
+}
+void Find_Loc(char *data , int *link ,int start ,char item , int *loc , int *ploc){
+    int ptr = start;
+    while(ptr!=-1){
+        if(data[link[ptr]] == item){
+            *ploc = ptr;
+            *loc=link[ptr];
+        }
+        ptr = link[ptr];
+    }
+    
+}
+void Delete(char *data , int *link ,int *start ,int *avail,char item){
+    int ploc=-1, loc=-1;
+    Find_Loc(data,link,*start,item ,&loc , &ploc);
+     if(loc ==-1){
+        printf("Item Not Found!! \n");
+        return;
+    }
+    deleteSpecific(data ,link ,start ,avail, ploc,loc);
+    
+}
 void size(int *start , char *data , int *link){
     int count = 0;
     int ptr=*start;
@@ -118,11 +150,19 @@ int main() {
     insertAtTail(data, link ,&start,&avail,'Q');
     traversing(data,link,&start); 
     size(&start , data ,link); 
-    insertAtTail(data, link ,&start,&avail,'H');
+    // insertAtTail(data, link ,&start,&avail,'H');
+    // traversing(data,link,&start); 
+    // size(&start , data ,link); 
+    // printf(" at index %d \n",search(&start,'X' , data ,link));
+    // printf(" at index %d \n",search(&start,'Q' , data ,link));
+    // deleteSpecific(data ,link ,&start ,&avail, 2,8);
+    // traversing(data,link,&start); 
+    printf("Enter the item you want to delete : ");
+    char item;
+    scanf("%c",&item);
+    Delete(data ,link ,&start ,&avail, item);
     traversing(data,link,&start); 
-    size(&start , data ,link); 
-    
-    // printf("Enter the character which you want to search : ");
+        // printf("Enter the character which you want to search : ");
     // char target;
     // scanf("%c",&target);
     // if(search(*start,target , data ,link) !=-1)
