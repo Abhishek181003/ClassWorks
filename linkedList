@@ -195,7 +195,7 @@ int main() {
             else if(choice ==10 ){
                 printf("Enter the item you want to delete : ");
                 int item;
-                scanf("%c",&item);
+                scanf("%d",&item);
                 Delete(data ,link ,&start ,&avail, item);
             }
             else if(choice ==11) break;
