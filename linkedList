@@ -1,10 +1,8 @@
-for(int i=0; i<10; i++#{
-    if(i==9i link[in=-1;
-    else link[ic=i+1;lude <stdio.h>
+#include <stdio.h>
 void traversing(int *data , int *link , int *start){
     int ptr = *start;
     while (ptr!=-1){
-        printf("%c -> ",data[ptr]);
+        printf("%d -> ",data[ptr]);
         ptr=link[ptr];
     }
     printf("null");
@@ -134,8 +132,8 @@ int search(int *start ,int target, int *data , int *link){
 }
 
 int main() {
-    int start=0; // head of data
-    int avail=1; // head of empty data
+    int start=-1; // head of data
+    int avail=0; // head of empty data
     int data[10]; // List for storing data
     int link[10]; // List for storing the indexes
     int choice = 1;
@@ -145,17 +143,16 @@ int main() {
         else link[i]=i+1;
     }
     while(choice){
-        printf("1.Display \n2.Size \n3.Search\n4.InsertAtSpecific\n5.InsertAtStart\n6.InsertAtEnd\n7.DeleteAtSpecific\n8.DeleteFirst\n9.DeleteEnd\n10.DeleteItem\n11.Exit\n");
+        printf("1.Display \t 2.Size \t 3.Search\n4.InsertAtSpecific \t 5.InsertAtStart \t 6.InsertAtEnd\n7.DeleteAtSpecific \t 8.DeleteFirst \t 9.DeleteEnd\n10.DeleteItem\t11.Exit\n");
         printf("Enter Your Choice : ");
         scanf("%d",&choice);
-        switch(choice){
             if(choice ==1 ) traversing(data,link,&start);
             else if(choice ==2 ) size(&start , data ,link);
             else if(choice ==3 ) {
                 printf("Enter the intacter which you want to search : ");
                 int target;
-                scanf("%c",&target);
-                if(search(*start,target , data ,link) !=-1)
+                scanf("%d",&target);
+                if(search(&start,target , data ,link) !=-1)
                     printf(" at index %d \n",search(&start,target , data ,link));
                 else printf("intacter is not present in the list \n");
             }
@@ -190,10 +187,10 @@ int main() {
                 deleteSpecific(data ,link ,&start ,&avail,ploc ,loc);
             }
             else if(choice ==8 ){
-                //
+                deleteHead(data , link ,&start ,&avail);
             }
             else if(choice ==9 ){
-                //
+                deleteTail(data , link ,&start ,&avail);
             }
             else if(choice ==10 ){
                 printf("Enter the item you want to delete : ");
@@ -207,44 +204,7 @@ int main() {
             }
             
         }
-    }
-    
-    traversing(data,link,&start); // A -> D -> G -> X -> null
-    size(&start , data ,link); // size is  4
-    insertAt(data, link ,&start,&avail,'J',4);
-    traversing(data,link,&start); // A -> D -> J -> G -> X -> null
-    size(&start , data ,link); // size is 5
-    insertAt(data, link ,&start,&avail,'L',6);
-    traversing(data,link,&start); 
-    size(&start , data ,link); 
-    insertAtHead(data, link ,&start,&avail,'Z');
-    traversing(data,link,&start); 
-    size(&start , data ,link); 
-    insertAtHead(data, link ,&start,&avail,'P');
-    traversing(data,link,&start); 
-    size(&start , data ,link); 
-    insertAtTail(data, link ,&start,&avail,'Q');
-    traversing(data,link,&start); 
-    size(&start , data ,link); 
-    // insertAtTail(data, link ,&start,&avail,'H');
-    // traversing(data,link,&start); 
-    // size(&start , data ,link); 
-    // printf(" at index %d \n",search(&start,'X' , data ,link));
-    // printf(" at index %d \n",search(&start,'Q' , data ,link));
-    // deleteSpecific(data ,link ,&start ,&avail, 2,8);
-    // traversing(data,link,&start); 
-    printf("Enter the item you want to delete : ");
-    int item;
-    scanf("%c",&item);
-    Delete(data ,link ,&start ,&avail, item);
-    traversing(data,link,&start); 
-        // printf("Enter the intacter which you want to search : ");
-    // int target;
-    // scanf("%c",&target);
-    // if(search(*start,target , data ,link) !=-1)
-    // printf(" at index %d \n",search(&start,target , data ,link));
-    // else printf("intacter is not present in the list \n");
     printf("Program end here");
 
     return 0;
-}
+    }
