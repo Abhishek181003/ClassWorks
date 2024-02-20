@@ -66,14 +66,18 @@ void deleteHead(int *data , int *link ,int *start ,int *avail){
     *avail=loc;
 }
 void deleteTail(int *data , int *link ,int *start ,int *avail){
+    if(link[*start]==-1){ 
+        deleteHead(data,link,start,avail);
+        return;
+    }
     int ptr = *start;
     while(link[link[ptr]]!=-1){
         ptr=link[ptr];
     }
-    int loc = link[ptr];
-    
-    link[loc]=*avail;
-    *avail=loc;
+    int loc =ptr;
+    link[link[loc]]=*avail;
+    link[loc]=-1;
+    *avail=link[loc];
 }
 void deleteSpecific(int *data , int *link ,int *start ,int *avail, int ploc ,int loc){
    
@@ -87,6 +91,10 @@ void deleteSpecific(int *data , int *link ,int *start ,int *avail, int ploc ,int
     *avail=loc;
 }
 void Find_Loc(int *data , int *link ,int start ,int item , int *loc , int *ploc){
+    if(link[start]==-1){
+        *loc = start;
+        return;
+    }
     int ptr = start;
     while(ptr!=-1){
         if(data[link[ptr]] == item){
@@ -122,7 +130,7 @@ int search(int *start ,int target, int *data , int *link){
     int idx = 0;
     while(ptr != -1){
         if(data[ptr]==target){
-        printf("It's present at position %d and",idx);
+        printf("It's present at position %d and ",idx);
         return ptr;
         }
         idx++;
@@ -154,7 +162,7 @@ int main() {
                 scanf("%d",&target);
                 if(search(&start,target , data ,link) !=-1)
                     printf(" at index %d \n",search(&start,target , data ,link));
-                else printf("intacter is not present in the list \n");
+                else printf("Target is not present in the list \n");
             }
             else if(choice ==4 ){
                 printf("Enter the element : ");
