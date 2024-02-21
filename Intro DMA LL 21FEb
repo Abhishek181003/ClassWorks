@@ -14,6 +14,53 @@ void display(struct Node* head){
         temp = temp->next;
     }
     printf("Null\n");
+}void size(struct Node * head){
+    int count = 0;
+    struct Node *  ptr=head;
+    while(ptr != NULL){
+        count++;
+        ptr=ptr->next;
+    }
+    printf("The length of the list is : %d\n",count);
+    
+}
+void search(struct Node * head ,int target){
+    struct Node* temp = head;
+    int idx=0,flag=1;
+    while(temp!=NULL){
+        if(temp->data==target){
+        printf("The item %d is present at position %d\n",target,idx);
+        return;
+        }
+        idx++;
+        temp=temp->next;
+    }if(flag) printf("The item %d is not found.\n",target);
+}
+struct Node * deleteHead(struct Node * head ){
+    if(head->next==NULL){
+        return NULL;
+    }
+    else{
+        return head->next;
+    }
+}
+struct Node * delete(struct Node * head ,int target){
+    struct Node* temp = head;
+    if(temp->next==NULL){
+        return NULL;
+    }
+    if(temp->data==target){
+        return deleteHead(head);
+    }
+    int flag=1;
+    while(temp->next!=NULL){
+        if(temp->next->data==target){
+            temp->next=temp->next->next;
+        return head;;
+        }
+        temp=temp->next;
+    }if(flag) printf("The item %d is not found.\n",target);
+    return head;
 }
 int main() {
     // Way one
@@ -27,13 +74,16 @@ int main() {
     n1->data = 20;
     start=n1;
     // printf("%d ",n1->data);
-    // printf("%s",n1->next);
     n1=create_Node();
     n1->data=100;
     start->next = n1;
     n1=create_Node();
     n1->data=200;
     start->next->next = n1;
+    display(start);
+    size(start);
+    search(start,200);
+    start = delete(start,20);
     display(start);
 
     return 0;
