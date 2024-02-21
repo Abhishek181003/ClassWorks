@@ -14,14 +14,15 @@ void display(struct Node* head){
         temp = temp->next;
     }
     printf("Null\n");
-}void size(struct Node * head){
+}
+int size(struct Node * head){
     int count = 0;
     struct Node *  ptr=head;
     while(ptr != NULL){
         count++;
         ptr=ptr->next;
     }
-    printf("The length of the list is : %d\n",count);
+    return count;
     
 }
 void search(struct Node * head ,int target){
@@ -36,17 +37,66 @@ void search(struct Node * head ,int target){
         temp=temp->next;
     }if(flag) printf("The item %d is not found.\n",target);
 }
+struct Node* insertAtHead(struct Node *head, int value){
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=head;
+        return temp;
+}
+void insertAtTail(struct Node *head, int value){
+    struct Node * ptr = head;
+    while(ptr->next!=NULL){
+        ptr=ptr->next;
+    }
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=NULL;
+        ptr->next=temp;
+}
+
+struct Node* insertAt(struct Node * head , int idx , int value){
+    if(size(head)+1<idx){
+        printf("Index is out of bound\n");
+        return head;
+    }
+    if(idx==0){
+        struct Node * newHead = insertAtHead(head,value);
+        return newHead;
+    }
+    if(idx==size(head)){
+        insertAtTail(head , value);
+        return head;
+    }
+    else{
+        struct Node * ptr = head;
+        for(int i=0; i<idx-1; i++){
+            ptr=ptr->next;
+        }
+        struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=ptr->next;
+        ptr->next=temp;
+        return head;
+        }
+}
+
 struct Node * deleteHead(struct Node * head ){
     if(head->next==NULL){
+        free(head);
         return NULL;
     }
     else{
-        return head->next;
+        struct Node *p = head;
+        head = head->next;
+        free(p);
+        return head;
+        
     }
 }
 struct Node * delete(struct Node * head ,int target){
     struct Node* temp = head;
     if(temp->next==NULL){
+        free(temp);
         return NULL;
     }
     if(temp->data==target){
@@ -55,8 +105,10 @@ struct Node * delete(struct Node * head ,int target){
     int flag=1;
     while(temp->next!=NULL){
         if(temp->next->data==target){
+            struct Node *p = temp;
             temp->next=temp->next->next;
-        return head;;
+            free(p);
+            return head;;
         }
         temp=temp->next;
     }if(flag) printf("The item %d is not found.\n",target);
@@ -81,10 +133,16 @@ int main() {
     n1->data=200;
     start->next->next = n1;
     display(start);
-    size(start);
+    int len = size(start);
+    printf("The length of the list is %d \n",len);
     search(start,200);
     start = delete(start,20);
+    len = size(start);
+    printf("The length of the list is %d \n",len);
     display(start);
+    start = insertAt(start , 0, 46);
+    display(start);
+    
 
     return 0;
 }
