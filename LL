@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{
+    int data;
+    struct Node * next;
+    struct Node * prev;
+};
+struct Node * create_Node(){
+    return (struct Node *)malloc(sizeof(struct Node));
+}
+void display(struct Node* head){
+    struct Node* temp = head;
+    while(temp!=NULL){
+        printf("%d->",temp->data);
+        temp = temp->next;
+    }
+    printf("Null\n");
+}
+void displayReverse(struct Node* Tail){
+    struct Node* temp = Tail;
+    while(temp!=NULL){
+        printf("%d->",temp->data);
+        temp = temp->prev;
+    }
+    printf("Null\n");
+}
+int size(struct Node * head){
+    int count = 0;
+    struct Node *  ptr=head;
+    while(ptr != NULL){
+        count++;
+        ptr=ptr->next;
+    }
+    return count;
+}
+void search(struct Node * head ,int target){
+    struct Node* temp = head;
+    int idx=0;
+    while(temp!=NULL){
+        idx++;
+        if(temp->data==target){
+        printf("The item %d is present at position %d\n",target,idx);
+        return;
+        }
+        temp=temp->next;
+    }printf("The item %d is not found.\n",target);
+}
+void insertAtHead(struct Node **head, struct Node **  tail , int value){
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=*head;
+        (*head) = temp;
+}
+void insertAtTail(struct Node **head , struct Node **  tail , int value){
+    struct Node * ptr = *head;
+    while(ptr->next!=NULL){
+        ptr=ptr->next;
+    }
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=NULL;
+        ptr->next=temp;
+        temp->prev=ptr;
+        *tail=temp;
+}
+void insertSpecific(struct Node ** head , struct Node **  tail , struct Node *loc , int item){
+    if(loc==NULL){ 
+        insertAtHead(head,tail,item);
+        (*tail)=*head;
+        return;
+    }
+    if(loc==(*tail)){
+        struct Node * temp = create_Node();
+        temp->data=item;
+        loc->next=temp;
+        temp->prev=loc;
+        *tail=temp;
+        return;
+    }
+    struct Node * temp = create_Node();
+    temp->data=item;
+    temp->next=loc->next;
+    temp->prev=loc;
+    loc->next->prev=temp;
+    loc->next=temp;
+}
+void insertAt(struct Node ** head  , struct Node **  tail , int idx , int value){
+    if(size(*head)+1<=idx){
+        printf("Index is out of bound\n");
+        return;
+    }
+    if(idx==0){
+        insertAtHead(head,tail,value);
+        return;
+    }
+    if(idx==size(*head)){
+        insertAtTail(head ,tail, value);
+        return;
+    }
+    else{
+        struct Node * ptr = *head;
+        for(int i=0; i<idx-1; i++){
+            ptr=ptr->next;
+        }
+        struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+        temp->data = value;
+        temp->next=ptr->next;
+        ptr->next=temp;
+        }
+}
+
+void deleteHead(struct Node ** head ){
+    if((*head)->next==NULL){
+        free(*head);
+        (*head)=NULL;
+    }
+    else{
+        struct Node *p = *head;
+        *head = (*head)->next;
+        free(p);
+    }
+}
+void delete(struct Node ** head ,int target){
+    struct Node* temp = *head;
+    if(temp->next==NULL){
+        free(temp);
+        *head= NULL;
+    }
+    if(temp->data==target){
+        deleteHead(head);
+        return;
+    }
+    int flag=1;
+    while(temp->next!=NULL){
+        if(temp->next->data==target){
+            struct Node *p = temp;
+            temp->next=temp->next->next;
+            free(p);
+            return;
+        }
+        temp=temp->next;
+    }if(flag) printf("The item %d is not found.\n",target);
+}
+int main() {
+    // Way one
+    // struct Node n1;
+    // n1.data=10;
+    // n1.next=NULL;
+    // printf("%d ",n1.data);
+    // printf("%s",n1.next);
+    struct Node *n1,*start,*tail;
+    n1 = create_Node();
+    n1->data = 20;
+    start=n1;
+    n1=create_Node();
+    n1->data=100;
+    start->next = n1;
+    n1->prev=start;
+    n1=create_Node();
+    n1->data=200;
+    start->next->next = n1;
+    n1->prev=start->next;
+    tail=n1;
+    display(start);
+    displayReverse(tail);
+    // insertSpecific(&start,&tail,start->next->next,123);
+    // insertSpecific(&start,&tail,start->next->next,123);
+    insertAtHead(&start,&tail,123);
+    displayReverse(tail);
+    insertAtTail(&start,&tail,1234);
+    display(start);
+    displayReverse(tail);
+    // int len = size(start);
+    // printf("The length of the list is %d \n",len);
+    // search(start,656);
+    // delete(&start,20);
+    // len = size(start);
+    // printf("The length of the list is %d \n",len);
+    // display(start);
+    // insertAt(&start , 2, 46);
+    // display(start);
+    
+
+    return 0;
+}
