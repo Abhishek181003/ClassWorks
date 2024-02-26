@@ -130,27 +130,47 @@ void insertAt(struct Node ** head  , struct Node **  tail , int idx , int value)
 }
 // -----------------------------------------------------------
 // -----------------DELETE ELEMENT AT HEAD -------------------
-void deleteHead(struct Node ** head ){
+void deleteHead(struct Node ** head , struct Node ** tail){
     if((*head)->next==NULL){
         free(*head);
         (*head)=NULL;
+        (*tail)=NULL;
     }
     else{
         struct Node *p = *head;
         *head = (*head)->next;
+        (*head)->prev=NULL;
         free(p);
     }
 }
 // -----------------------------------------------------------
+// -----------------DELETE ELEMENT AT TAIL -------------------
+void deleteTail(struct Node ** head , struct Node ** tail){
+    if((*head)->next==NULL){
+        free(*head);
+        (*head)=NULL;
+        (*tail)=NULL;
+    }
+    else{
+        struct Node *p = *head;
+        while(p->next->next!=NULL){
+        p = p->next;
+        }
+        free(p->next);
+        p->next=NULL;
+        *tail = p;
+    }
+}
+// -----------------------------------------------------------
 // ----------------- DELETE ELEMENT BY VALUE -------------------
-void delete(struct Node ** head ,int target){
+void delete(struct Node ** head , struct Node ** tail ,int target){
     struct Node* temp = *head;
     if(temp->next==NULL){
         free(temp);
         *head= NULL;
     }
     if(temp->data==target){
-        deleteHead(head);
+        deleteHead(head,tail);
         return;
     }
     int flag=1;
@@ -187,23 +207,30 @@ int main() {
     tail=n1;
     display(start);
     displayReverse(tail);
-    // insertSpecific(&start,&tail,start->next->next,123);
-    // insertSpecific(&start,&tail,start->next->next,123);
+    insertSpecific(&start,&tail,start->next->next,123);
+    insertSpecific(&start,&tail,start->next->next,123);
     insertAtHead(&start,&tail,123);
     display(start);
     displayReverse(tail);
     insertAtTail(&start,&tail,1234);
     display(start);
     displayReverse(tail);
-    // int len = size(start);
-    // printf("The length of the list is %d \n",len);
-    // search(start,656);
-    // delete(&start,20);
-    // len = size(start);
-    // printf("The length of the list is %d \n",len);
-    // display(start);
-    // insertAt(&start , 2, 46);
-    // display(start);
+    deleteHead(&start,&tail);
+    display(start);
+    displayReverse(tail);
+    deleteTail(&start,&tail);
+    display(start);
+    displayReverse(tail);
+    
+    int len = size(start);
+    printf("The length of the list is %d \n",len);
+    search(start,123);
+    delete(&start,&tail,20);
+    len = size(start);
+    printf("The length of the list is %d \n",len);
+    display(start);
+    insertAt(&start ,&tail, 2, 46);
+    display(start);
     
 
     return 0;
