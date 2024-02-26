@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+// ----------------- Structure of Node  ---------------
 struct Node{
     int data;
     struct Node * next;
     struct Node * prev;
 };
+// -----------------------------------------------------
+// ------------- Creating a Node -----------------------
 struct Node * create_Node(){
     return (struct Node *)malloc(sizeof(struct Node));
 }
+// ----------------------------------------------------
+// ------------- Display (Travelsal) ------------------
 void display(struct Node* head){
     struct Node* temp = head;
     while(temp!=NULL){
@@ -16,6 +21,8 @@ void display(struct Node* head){
     }
     printf("Null\n");
 }
+// --------------------------------------------------------
+// ---------- Display Reverse (Travelsal Last) ------------
 void displayReverse(struct Node* Tail){
     struct Node* temp = Tail;
     while(temp!=NULL){
@@ -24,6 +31,8 @@ void displayReverse(struct Node* Tail){
     }
     printf("Null\n");
 }
+// -------------------------------------------------------
+// ---------------- SIZE OF LINKED LIST ------------------
 int size(struct Node * head){
     int count = 0;
     struct Node *  ptr=head;
@@ -33,6 +42,8 @@ int size(struct Node * head){
     }
     return count;
 }
+// --------------------------------------------------------
+// ---------------- SEARCHING IN LINKED LIST --------------
 void search(struct Node * head ,int target){
     struct Node* temp = head;
     int idx=0;
@@ -45,12 +56,17 @@ void search(struct Node * head ,int target){
         temp=temp->next;
     }printf("The item %d is not found.\n",target);
 }
+// ------------------------------------------------------------
+// // --------------- INSERT ELEMENT AT HEAD ------------------
 void insertAtHead(struct Node **head, struct Node **  tail , int value){
     struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
         temp->data = value;
         temp->next=*head;
+        (*head)->prev=temp;
         (*head) = temp;
 }
+// -----------------------------------------------------------
+// -----------------INSERT ELEMENT AT TAIL -------------------
 void insertAtTail(struct Node **head , struct Node **  tail , int value){
     struct Node * ptr = *head;
     while(ptr->next!=NULL){
@@ -63,6 +79,8 @@ void insertAtTail(struct Node **head , struct Node **  tail , int value){
         temp->prev=ptr;
         *tail=temp;
 }
+// -----------------------------------------------------------
+// -------------- INSERT ELEMENT AT SPECIFIC POINT -------------------
 void insertSpecific(struct Node ** head , struct Node **  tail , struct Node *loc , int item){
     if(loc==NULL){ 
         insertAtHead(head,tail,item);
@@ -84,6 +102,8 @@ void insertSpecific(struct Node ** head , struct Node **  tail , struct Node *lo
     loc->next->prev=temp;
     loc->next=temp;
 }
+// -----------------------------------------------------------
+// // -----------------INSERT ELEMENT AT INDEX -------------------
 void insertAt(struct Node ** head  , struct Node **  tail , int idx , int value){
     if(size(*head)+1<=idx){
         printf("Index is out of bound\n");
@@ -108,7 +128,8 @@ void insertAt(struct Node ** head  , struct Node **  tail , int idx , int value)
         ptr->next=temp;
         }
 }
-
+// -----------------------------------------------------------
+// -----------------DELETE ELEMENT AT HEAD -------------------
 void deleteHead(struct Node ** head ){
     if((*head)->next==NULL){
         free(*head);
@@ -120,6 +141,8 @@ void deleteHead(struct Node ** head ){
         free(p);
     }
 }
+// -----------------------------------------------------------
+// ----------------- DELETE ELEMENT BY VALUE -------------------
 void delete(struct Node ** head ,int target){
     struct Node* temp = *head;
     if(temp->next==NULL){
@@ -141,6 +164,7 @@ void delete(struct Node ** head ,int target){
         temp=temp->next;
     }if(flag) printf("The item %d is not found.\n",target);
 }
+// ---------------------------------------------------------
 int main() {
     // Way one
     // struct Node n1;
@@ -166,6 +190,7 @@ int main() {
     // insertSpecific(&start,&tail,start->next->next,123);
     // insertSpecific(&start,&tail,start->next->next,123);
     insertAtHead(&start,&tail,123);
+    display(start);
     displayReverse(tail);
     insertAtTail(&start,&tail,1234);
     display(start);
