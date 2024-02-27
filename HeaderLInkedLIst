@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{
+    int data;
+    struct Node * next;
+};
+struct Node * create_Node(){
+    return (struct Node *)malloc(sizeof(struct Node));
+}
+void display(struct Node* head){
+    struct Node* temp = head->next;
+    while(temp!=NULL){
+        printf("%d->",temp->data);
+        temp = temp->next;
+    }
+    printf("Null\n");
+}
+int size(struct Node* head){
+    return head->data;
+}
+void insertAt(struct Node * head , int idx , int value){
+    struct Node *ptr = head;
+    for(int i=0; i<idx; i++) ptr = ptr->next;
+    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = value;
+    temp->next=ptr->next;
+    ptr->next=temp;
+    head->data=(head->data)+1;
+}
+void deleteIndex(struct Node * head ,int idx){
+    struct Node *ptr = head;
+    for(int i=0; i<idx; i++) ptr = ptr->next;
+    struct Node *temp = ptr->next;
+    ptr->next=ptr->next->next;
+    head->data=(head->data)-1;
+    free(temp);
+}
+void delete(struct Node * head ,int target){
+    struct Node* ptr = head;
+    int flag = 1;
+    while(ptr->next!=NULL){
+        if(ptr->next->data == target) {
+            flag = 0;
+            break;
+        }    
+        ptr = ptr -> next;
+    }
+    if(flag) {
+        printf("Item not found in the list!!\n");
+        return;
+    }    
+    struct Node *temp = ptr->next;
+    ptr->next = ptr->next->next;
+    head->data=(head->data)-1;
+    free(temp);
+}
+int main() {
+    struct Node *first,*start,*header; //header will store the length of the ll
+    header = create_Node();
+    start = header;
+    first = create_Node();
+    first->data = 20;
+    header->data=1;
+    header->next=first;
+    struct Node *second=create_Node();
+    second->data=100;
+    header->data=2;
+    first->next=second;
+    struct Node *third=create_Node();
+    third->data=200;
+    header->data=3;
+    second->next = third;
+    display(start);
+    printf("The length of the list is %d \n",size(start));
+    insertAt(start,3,235);
+    insertAt(start,0,150);
+    display(start);
+    printf("The length of the list is %d \n",size(start));
+    deleteIndex(start,3);
+    display(start);
+    printf("The length of the list is %d \n",size(start));
+    delete(start,200);
+    display(start);
+    printf("The length of the list is %d \n",size(start));
+    return 0;
+}
