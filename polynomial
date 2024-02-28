@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int coeff;
+    int power;
+    struct node *next;
+};
+struct node *create_Node(){
+    return (struct node*)malloc(sizeof(struct node));
+}
+void createPoly(struct node ** poly){
+    int n=1;
+    struct node * ptr = *poly;
+    do{
+        struct node* newNode = create_Node();
+        printf("Enter the co-efficient : ");
+        scanf("%d",&newNode->coeff);
+        printf("Enter the power : ");
+        scanf("%d",&newNode->power);
+        if(*poly == NULL){
+            *poly = newNode;
+        }else{
+            ptr->next = newNode;
+        }
+        ptr=newNode;
+        printf("Do you want to add more term? (yes(1) / No(0))");
+        scanf("%d",&n);
+    }while(n==1);
+}
+void addPoly(struct node *poly1 , struct node *poly2 , struct node ** res){
+    struct node * temp1 = poly1;
+    struct node * temp2 = poly2;
+    struct node * temp = create_Node();
+    struct node * ptr = temp;
+    while(temp1!=NULL & temp2!=NULL){
+        struct node * newNode = create_Node();
+        if(temp1->power > temp2->power){
+            newNode->power = temp1->power;
+            newNode->coeff = temp1->coeff;
+            temp1=temp1->next;
+        }else if(temp1->power == temp2->power){
+            newNode->power = temp1->power;
+            newNode->coeff = temp1->coeff + temp2->coeff;
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }else{
+            newNode->power = temp2->power;
+            newNode->coeff = temp2->coeff;
+            temp2=temp2->next;
+        }
+        ptr->next=newNode;
+        ptr=ptr->next;
+        
+    }
+    if(temp1==NULL) ptr->next=temp2;
+    else ptr->next=temp1;
+    *res = temp->next;
+}
+void displayPoly(struct node *head){
+    struct node*ptr = head;
+    while(ptr!=NULL){
+        // if(ptr->coeff == 0){
+            
+        // }
+        if(ptr->power == 0){
+            printf("(%d)",ptr->coeff);
+        }
+        else if(ptr->next==NULL){
+            printf("(%dx^%d)",ptr->coeff,ptr->power);
+        }else{
+        printf("(%dx^%d) + ",ptr->coeff,ptr->power);
+        }
+        ptr=ptr->next;
+    }
+}
+int main() {
+    struct node* poly=NULL;
+    // createPoly(&poly);
+    // displayPoly(poly);
+    struct node * poly1 =NULL;
+    struct node * poly2 = NULL;
+    struct node * res = NULL;
+    
+    printf("Enter the poly 1\n");
+    createPoly(&poly1);
+    printf("Enter the poly 2\n");
+    createPoly(&poly2);
+    addPoly(poly1,poly2,&res);
+    displayPoly(res);
+    return 0;
+}
