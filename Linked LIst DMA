@@ -43,8 +43,12 @@ void insertAtHead(struct Node **head, int value){
         temp->next=*head;
         (*head) = temp;
 }
-void insertAtTail(struct Node *head, int value){
-    struct Node * ptr = head;
+void insertAtTail(struct Node **head, int value){
+    if(head==NULL){
+        insertAtHead(head,value);
+        return;
+    }
+    struct Node * ptr = *head;
     while(ptr->next!=NULL){
         ptr=ptr->next;
     }
@@ -64,7 +68,7 @@ void insertAt(struct Node ** head , int idx , int value){
         return;
     }
     if(idx==size(*head)){
-        insertAtTail(*head , value);
+        insertAtTail(head , value);
         return;
     }
     else{
@@ -112,34 +116,61 @@ void delete(struct Node ** head ,int target){
     }if(flag) printf("The item %d is not found.\n",target);
 }
 int main() {
-    // Way one
-    // struct Node n1;
-    // n1.data=10;
-    // n1.next=NULL;
-    // printf("%d ",n1.data);
-    // printf("%s",n1.next);
-    struct Node *n1,*start;
-    n1 = create_Node();
-    n1->data = 20;
-    start=n1;
-    // printf("%d ",n1->data);
-    n1=create_Node();
-    n1->data=100;
-    start->next = n1;
-    n1=create_Node();
-    n1->data=200;
-    start->next->next = n1;
-    display(start);
-    int len = size(start);
-    printf("The length of the list is %d \n",len);
-    search(start,200);
-    delete(&start,20);
-    len = size(start);
-    printf("The length of the list is %d \n",len);
-    display(start);
-    insertAt(&start , 2, 46);
-    display(start);
-    
+    struct Node * start=NULL; // head of data
+    int choice = 1;
+    while(choice){
+        printf("1.Display \t 2.Size \t 3.Search\n4.InsertAtSpecific \t 5.InsertAtStart \t 6.InsertAtEnd\n7.DeleteFirst\t8.DeleteItem\t9.Exit\n");
+        printf("Enter Your Choice : ");
+        scanf("%d",&choice);
+            if(choice ==1 ) display(start);
+            else if(choice ==2 ) size(start);
+            else if(choice ==3 ) {
+                printf("Enter the intacter which you want to search : ");
+                int target;
+                scanf("%d",&target);
+                search(start,target);
+                // if(search(start,target) !=-1)
+                //     printf(" at index %d \n",search(start,target);
+                // else printf("Target is not present in the list \n");
+            }
+            else if(choice ==4 ){
+                printf("Enter the element : ");
+                int val;
+                scanf("%d",&val);
+                printf("Enter the location : ");
+                int loc ;
+                scanf("%d",&loc);
+                insertAt(&start ,loc , val);
+            }
+            else if(choice ==5 ){
+                printf("Enter the element : ");
+                int val;
+                scanf("%d",&val);
+                insertAtHead(&start,val);
+            }
+            else if(choice ==6 ){
+                printf("Enter the element : ");
+                int val;
+                scanf("%d",&val);
+                insertAtTail(&start,val);
+            }
+            else if(choice ==7 ){
+                deleteHead(&start);
+            }
+            else if(choice ==8 ){
+                printf("Enter the value you want to delete : ");
+                int target;
+                scanf("%d",&target);
+                delete(&start, target);
+            }
+            else if(choice ==9) break;
+            else{
+                printf("Wrong Input!!");
+            }
+            
+        }
+    printf("Program end here");
 
     return 0;
+    
 }
