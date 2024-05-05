@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the Node structure
+struct Node {
+  int data;
+  struct Node* next;
+};
+
+// Function to create a new Node
+struct Node* newNode(int data) {
+  struct Node* temp = (struct Node*) malloc(sizeof(struct Node));
+  temp->data = data;
+  temp->next = NULL;
+  return temp;
+}
+
+// Function to create a circular linked list
+struct Node* createCircularList(int n, int data[]) {
+  struct Node* head = NULL;
+  struct Node* last = NULL;
+
+  for (int i = 0; i < n; i++) {
+    struct Node* temp = newNode(data[i]);
+
+    if (head == NULL) {
+      head = temp;
+      last = temp;
+    } else {
+      last->next = temp;
+      last = temp;
+    }
+
+    // Make the list circular
+    if (i == n - 1) {
+      last->next = head;
+    }
+  }
+
+  return head;
+}
+
+int main() {
+  int data[] = {10, 20, 30, 40, 50};
+  int n = sizeof(data) / sizeof(data[0]);
+
+  struct Node* head = createCircularList(n, data);
+
+  // Print the circular linked list
+  struct Node* temp = head;
+  do {
+    printf("%d ", temp->data);
+    temp = temp->next;
+  } while (temp != head);
+
+  return 0;
+}
